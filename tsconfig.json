@@ -1,0 +1,24 @@
+{
+  "name": "game-front",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist" // Указываем папку для скомпилированных файлов
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"], // Исключаем папку dist из компиляции
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
+
