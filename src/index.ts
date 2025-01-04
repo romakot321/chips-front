@@ -4,21 +4,19 @@ import { ServerService } from './server';
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 
-var model = userService.create("user2")
+var model = new UserModel("a", 0);
 
 let serverService: ServerService;
 function openCallback() {
   serverService.authenticate(model.name, "room");
-  model.move(new Vector(5, 5));
-  serverService.move(model.position.x, model.position.y);
+  serverService.changeScore(5);
 
   function tick() {
     console.log("Users:")
     for (const user of userRepository.list()) {
-      console.log(`- ID: ${user.id}, name: ${user.name}, pos: ${user.position.x} ${user.position.y}`);
+      console.log(`- ID: ${user.id}, name: ${user.name}, score: ${user.score}`);
     }
-    model.move(new Vector(5, 5));
-    serverService.move(5, 5);
+    serverService.changeScore(5);
     setTimeout(tick, 500);
   }
 

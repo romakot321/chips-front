@@ -1,0 +1,49 @@
+html, body {
+  /* Global settings */
+  --primary-color: white;
+  --secondary-color: black;
+  --accent-color: #d4d4ff;
+  --text-color: black;
+
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+
+  background-color: var(--primary-color);
+}
+
+.header {
+  /* Container for header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  margin: 0;
+  margin-bottom: 50px;
+
+  height: 10%;
+  width: 100%;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.header h1 {
+  /* App title */
+  color: var(--text-color);
+  font-size: 5vw;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+@media only screen and (max-width: 550px) {
+  /* Adaptive font-size for header */
+  .header h1 {
+    font-size: 14vw;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  /* Adaptive font-size for header */
+  .header h1 {
+    font-size: 17vw;
+  }
+}

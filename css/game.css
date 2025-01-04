@@ -1,0 +1,35 @@
+#canvas {
+  /* Canvas */
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+#field {
+  /* Field size */
+  width: 100%;
+  height: 100%;
+}
+
+#bet-button {
+  /* Button for bet */
+  position: absolute;
+  top: 30px;
+  left: calc(10% - 1.5rem);
+  font: 1.5rem sans-serif;
+  padding: 5px;
+  width: 15vmin;
+  height: 13vmin;
+  text-align: center;
+
+  background-color: #666;
+  color: white;
+  border: none;
+  z-index: 2;
+}
+
+.inactive {
+  /* Style for inactive button */
+  color: darkgray;
+}

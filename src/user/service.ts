@@ -5,17 +5,20 @@ import { UserRepository } from './repository';
 export class UserService {
   constructor(private userRepository: UserRepository) { }
 
-  create(name: string, x: number | undefined = undefined, y: number | undefined = undefined): UserModel {
-    var model = new UserModel(name, x, y);
-    model = this.userRepository.store(model);
-    return model;
+  create(name: string, score: number | undefined = undefined): UserModel {
+    var model = new UserModel(name, score);
+    return this.userRepository.store(model);
   }
 
-  move(name: string, bias: Vector): void {
+  get(name: string): UserModel | undefined {
+    return this.userRepository.get(undefined, name);
+  }
+
+  addScore(name: string, amount: number): void {
     var model = this.userRepository.get(undefined, name);
     if (model == undefined)
       return;
-    model.move(bias);
+    model.addScore(amount);
   }
 
   list(): UserModel[] {

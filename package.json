@@ -1,5 +1,6 @@
 {
   "name": "game-front",
+  "type": "commonjs",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
@@ -7,10 +8,17 @@
     "start": "node dist/index.js"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
+    "@babel/preset-typescript": "^7.26.0",
     "@types/node": "^22.10.2",
+    "babelify": "^10.0.0",
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "browserify": "^17.0.1",
+    "tsify": "^5.0.4",
     "ws": "^8.18.0"
   }
 }

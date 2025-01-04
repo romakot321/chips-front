@@ -1,13 +1,13 @@
 export class UserModel {
   public id: number | null = null;
-  public position: Vector;
+  public score: number;
 
-  constructor(public name: string, x: number | undefined = undefined, y: number | undefined = undefined) {
-    this.position = new Vector(x ?? 0, y ?? 0);
+  constructor(public name: string, score: number | undefined = undefined) {
+    this.score = score ?? 0;
   }
 
-  move(bias: Vector): void {
-    this.position.add(bias);
+  addScore(value: number) {
+    this.score += value;
   }
 }
 

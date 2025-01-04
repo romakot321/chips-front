@@ -3,10 +3,13 @@ import { UserModel } from '../user';
 
 export enum MessageEvent {
   authenticate = 0,
-  connected = 1,
-  move = 2,
-  entityAdd = 3,
-  users = 4
+  connected,
+  move,
+  entityAdd,
+  users,
+  changeScore,
+  win,
+  restart
 }
 
 interface MessageSchema {
@@ -89,17 +92,17 @@ export class MoveMessageSchema implements MessageSchema {
 
 interface UsersMessageDataSchema {
   event: number;
-  data: {users: {name: string, x: number, y: number}[]};
+  data: {users: {name: string, score: number}[]};
 }
 
 export class UsersMessageSchema implements MessageSchema {
   public event: MessageEvent = MessageEvent.users;
-  public data: {"users": {"name": string, "x": number, "y": number}[]};
+  public data: {"users": {"name": string, "score": number}[]};
 
   constructor(users: UserModel[]) {
-    let parsedUsers: {"name": string, "x": number, "y": number}[] = [];
+    let parsedUsers: {"name": string, "score": number}[] = [];
     for (const user of users)
-      parsedUsers.push({name: user.name, x: user.position.x, y: user.position.y});
+      parsedUsers.push({name: user.name, score: user.score});
     this.data = {users: parsedUsers};
   }
 
@@ -122,8 +125,145 @@ export class UsersMessageSchema implements MessageSchema {
     if (!UsersMessageSchema.validate(obj) || obj.event != MessageEvent.users)
       return null;
     let users: UserModel[] = [];
-    for (const user of (obj.data.users as {name: string, x: number, y: number}[]))
-      users.push(new UserModel(user.name, user.x, user.y));
+    for (const user of (obj.data.users as {name: string, score: number}[]))
+      users.push(new UserModel(user.name, user.score));
     return new UsersMessageSchema(users);
+  }
+}
+
+interface ChangeScoreMessageDataSchema {
+  event: number;
+  data: {amount: number, username: string | null};
+}
+
+export class ChangeScoreMessageSchema implements MessageSchema {
+  public event: MessageEvent = MessageEvent.changeScore;
+  public data: {"amount": number, "username": string | null};
+
+  constructor(amount: number, username: string | null) {
+    this.data = {amount: amount, username: username};
+  }
+
+  static validate(obj: any): obj is ChangeScoreMessageDataSchema {
+    return (
+      obj &&
+      typeof obj === 'object' &&
+      'event' in obj &&
+      typeof obj.event === 'number' &&
+      obj.event in MessageEvent &&
+      'data' in obj &&
+      typeof obj.data === 'object' &&
+      'username' in obj.data &&
+      'amount' in obj.data
+    )
+  }
+
+  static fromObject(raw: string): ChangeScoreMessageSchema | null {
+    var obj = JSON.parse(raw);
+    if (!ChangeScoreMessageSchema.validate(obj) || obj.event != MessageEvent.changeScore)
+      return null;
+    return new ChangeScoreMessageSchema(obj.data.amount, obj.data.username === "" ? null : obj.data.username);
+  }
+}
+
+interface SuccessfulAuthMessageDataSchema {
+  event: number;
+  data: {score: number, name: string};
+}
+
+export class SuccessfulAuthMessageSchema implements MessageSchema {
+  public event: MessageEvent = MessageEvent.authenticate;
+  public data: {"score": number, "name": string};
+
+  constructor(score: number, name: string) {
+    this.data = {score: score, name: name};
+  }
+
+  static validate(obj: any): obj is SuccessfulAuthMessageDataSchema {
+    return (
+      obj &&
+      typeof obj === 'object' &&
+      'event' in obj &&
+      typeof obj.event === 'number' &&
+      obj.event in MessageEvent &&
+      'data' in obj &&
+      typeof obj.data === 'object' &&
+      'name' in obj.data &&
+      'score' in obj.data
+    )
+  }
+
+  static fromObject(raw: string): SuccessfulAuthMessageSchema | null {
+    var obj = JSON.parse(raw);
+    if (!SuccessfulAuthMessageSchema.validate(obj) || obj.event != MessageEvent.authenticate)
+      return null;
+    return new SuccessfulAuthMessageSchema(obj.data.score, obj.data.name);
+  }
+}
+
+interface WinMessageDataSchema {
+  event: number;
+  data: {name: string};
+}
+
+export class WinMessageSchema implements MessageSchema {
+  public event: MessageEvent = MessageEvent.win;
+  public data: {"name": string};
+
+  constructor(name: string) {
+    this.data = {name: name};
+  }
+
+  static validate(obj: any): obj is WinMessageDataSchema {
+    return (
+      obj &&
+      typeof obj === 'object' &&
+      'event' in obj &&
+      typeof obj.event === 'number' &&
+      obj.event in MessageEvent &&
+      'data' in obj &&
+      typeof obj.data === 'object' &&
+      'name' in obj.data
+    )
+  }
+
+  static fromObject(raw: string): WinMessageSchema | null {
+    var obj = JSON.parse(raw);
+    if (!WinMessageSchema.validate(obj) || obj.event != MessageEvent.win)
+      return null;
+    return new WinMessageSchema(obj.data.name);
+  }
+}
+
+interface RestartMessageDataSchema {
+  event: number;
+  data: {};
+}
+
+export class RestartMessageSchema implements MessageSchema {
+  public event: MessageEvent = MessageEvent.restart;
+  public data: {};
+
+  constructor() {
+    this.data = {};
+  }
+
+  static validate(obj: any): obj is RestartMessageDataSchema {
+    return (
+      obj &&
+      typeof obj === 'object' &&
+      'event' in obj &&
+      typeof obj.event === 'number' &&
+      obj.event in MessageEvent &&
+      'data' in obj &&
+      typeof obj.data === 'object'
+    )
+  }
+
+  static fromObject(raw: string): RestartMessageSchema | null {
+    var obj = JSON.parse(raw);
+    if (!RestartMessageSchema.validate(obj) || obj.event != MessageEvent.restart)
+      return null;
+    return new RestartMessageSchema();
   }
 }
