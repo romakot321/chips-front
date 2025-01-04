@@ -20,7 +20,7 @@ function init(baseUrl: string) {
   betButton = document.getElementById("bet-button") as HTMLElement;
   betButton.addEventListener("click", doBet);
 
-  serverService = new ServerService(baseUrl.replace("http://", "ws://") + "/game/ws", userService, start);
+  serverService = new ServerService(baseUrl.replace("http://", "wss://") + "/game/ws", userService, start);
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);

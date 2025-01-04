@@ -5,7 +5,7 @@ import { startGame } from './game.page';
 import { connectAdmin } from './admin.page';
 
 function init() {
-  var baseUrl = "http://192.168.0.106:8000/api"
+  var baseUrl = "https://poker.eramir.ru/api"
 
   const roomRepository = new RoomRepository(baseUrl);
   const userRepository = new UserRepository();
