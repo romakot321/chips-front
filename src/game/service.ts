@@ -133,7 +133,6 @@ export class GameService {
   private tick() {
     var user = this.userService.get(this.username);
     this.userCoins = (user?.score ?? 0) - this.countGrabbedCoins();
-    this.spawnCoins();
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -147,6 +146,12 @@ export class GameService {
     }
 
     requestAnimationFrame(this.tick.bind(this));
+  }
+
+  updateCoins() {
+    var user = this.userService.get(this.username);
+    this.userCoins = (user?.score ?? 0) - this.countGrabbedCoins();
+    this.spawnCoins();
   }
 
   start() {

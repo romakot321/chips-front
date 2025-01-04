@@ -20,8 +20,6 @@ function init(baseUrl: string) {
   betButton = document.getElementById("bet-button") as HTMLElement;
   betButton.addEventListener("click", doBet);
 
-  serverService = new ServerService(baseUrl.replace("http://", "wss://") + "/game/ws", userService, start);
-
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   for (const i of urlParams) {
@@ -32,6 +30,14 @@ function init(baseUrl: string) {
   }
 
   gameService = new GameService(userService, username);
+
+  serverService = new ServerService(
+    baseUrl.replace("http://", "wss://") + "/game/ws",
+    userService,
+    start,
+    (username: string, amount: number) => { gameService.updateCoins(); },
+    (username: string, score: number) => { gameService.updateCoins(); }
+  );
 }
 
 function start() {
