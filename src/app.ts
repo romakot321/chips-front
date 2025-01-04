@@ -4,6 +4,25 @@ import { loadRooms } from './room.page';
 import { startGame } from './game.page';
 import { connectAdmin } from './admin.page';
 
+declare global {
+  interface Window {
+    Telegram: any;
+  }
+}
+
+function disableScrolling() {
+  const app = window.Telegram.WebApp;
+  app.expand();
+  app.ready();
+  app.disableVerticalSwipes();
+  app.requestFullscreen();
+  document.body.style.overflowY = 'hidden';
+  document.body.style.marginTop = `5px`;
+  document.body.style.height = window.innerHeight + 5 + "px";
+  document.body.style.paddingBottom = `5px`;
+  window.scrollTo(5, 5);
+}
+
 function init() {
   var baseUrl = "https://poker.eramir.ru/api"
 
